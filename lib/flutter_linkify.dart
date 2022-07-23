@@ -22,6 +22,8 @@ const defaultLinkStyle = TextStyle(
   decoration: TextDecoration.underline,
 );
 
+const defaultLinkCursor = SystemMouseCursors.click;
+
 /// Turns URLs into links
 class Linkify extends Text {
   /// Text to be linkified
@@ -41,6 +43,9 @@ class Linkify extends Text {
   /// Style of link text
   final TextStyle? linkStyle;
 
+  /// MouseCursor to show when hovering over links
+  final MouseCursor? linkCursor;
+
   Linkify({
     super.key,
     required this.text,
@@ -49,7 +54,8 @@ class Linkify extends Text {
     this.options = const LinkifyOptions(),
     // TextSpan
     super.style,
-    this.linkStyle,
+    this.linkStyle = defaultLinkStyle,
+    this.linkCursor = defaultLinkCursor,
     // SelectableText
     super.textAlign,
     super.textDirection,
@@ -64,7 +70,8 @@ class Linkify extends Text {
             options: options,
             linkifiers: linkifiers,
             onOpen: onOpen,
-            linkStyle: defaultLinkStyle.merge(linkStyle),
+            linkStyle: linkStyle,
+            linkCursor: linkCursor,
           ),
         );
 }
@@ -88,6 +95,9 @@ class SelectableLinkify extends SelectableText {
   /// Style of link text
   final TextStyle? linkStyle;
 
+  /// MouseCursor to show when hovering over links
+  final MouseCursor? linkCursor;
+
   SelectableLinkify({
     super.key,
     required this.text,
@@ -97,6 +107,7 @@ class SelectableLinkify extends SelectableText {
     // TextSpan
     super.style,
     this.linkStyle,
+    this.linkCursor = defaultLinkCursor,
     // SelectableText
     super.textAlign,
     super.textDirection,
@@ -126,7 +137,8 @@ class SelectableLinkify extends SelectableText {
             options: options,
             linkifiers: linkifiers,
             onOpen: onOpen,
-            linkStyle: defaultLinkStyle.merge(linkStyle),
+            linkStyle: linkStyle ?? defaultLinkStyle,
+            linkCursor: linkCursor,
           ),
         );
 }
@@ -135,9 +147,9 @@ class SelectableLinkify extends SelectableText {
 TextSpan buildTextSpan(
   List<LinkifyElement> elements, {
   TextStyle? style,
-  TextStyle? linkStyle,
+  TextStyle? linkStyle = defaultLinkStyle,
   LinkCallback? onOpen,
-  bool useMouseRegion = false,
+  MouseCursor? linkCursor = defaultLinkCursor,
 }) =>
     TextSpan(
       children: buildTextSpanChildren(
@@ -145,16 +157,16 @@ TextSpan buildTextSpan(
         style: style,
         linkStyle: linkStyle,
         onOpen: onOpen,
-        useMouseRegion: useMouseRegion,
+        linkCursor: linkCursor,
       ),
     );
 
 List<InlineSpan>? buildTextSpanChildren(
   List<LinkifyElement> elements, {
   TextStyle? style,
-  TextStyle? linkStyle,
+  TextStyle? linkStyle = defaultLinkStyle,
   LinkCallback? onOpen,
-  bool useMouseRegion = false,
+  MouseCursor? linkCursor = defaultLinkCursor,
 }) =>
     [
       for (var element in elements)
@@ -162,8 +174,10 @@ List<InlineSpan>? buildTextSpanChildren(
           TextSpan(
             text: element.text,
             style: linkStyle,
-            recognizer: onOpen != null ? (TapGestureRecognizer()..onTap = () => onOpen(element)) : null,
-            mouseCursor: useMouseRegion ? SystemMouseCursors.click : null,
+            recognizer: onOpen != null
+                ? (TapGestureRecognizer()..onTap = () => onOpen(element))
+                : null,
+            mouseCursor: linkCursor,
           )
         else
           TextSpan(
@@ -175,11 +189,11 @@ List<InlineSpan>? buildTextSpanChildren(
 class LinkifySpan extends TextSpan {
   LinkifySpan({
     required String text,
-    TextStyle? linkStyle,
+    TextStyle? linkStyle = defaultLinkStyle,
     LinkCallback? onOpen,
     LinkifyOptions options = const LinkifyOptions(),
     List<Linkifier> linkifiers = defaultLinkifiers,
-    bool useMouseRegion = false,
+    MouseCursor? linkCursor = defaultLinkCursor,
     super.style,
     super.recognizer,
     super.mouseCursor,
@@ -194,7 +208,7 @@ class LinkifySpan extends TextSpan {
             style: style,
             linkStyle: linkStyle,
             onOpen: onOpen,
-            useMouseRegion: useMouseRegion,
+            linkCursor: linkCursor,
           ),
         );
 }
