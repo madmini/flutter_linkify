@@ -17,6 +17,11 @@ export 'package:linkify/linkify.dart'
 /// Callback clicked link
 typedef LinkCallback = void Function(LinkableElement link);
 
+const defaultLinkStyle = TextStyle(
+  color: Colors.blueAccent,
+  decoration: TextDecoration.underline,
+);
+
 /// Turns URLs into links
 class Linkify extends Text {
   /// Text to be linkified
@@ -59,10 +64,7 @@ class Linkify extends Text {
             options: options,
             linkifiers: linkifiers,
             onOpen: onOpen,
-            linkStyle: const TextStyle(
-              color: Colors.blueAccent,
-              decoration: TextDecoration.underline,
-            ).merge(linkStyle),
+            linkStyle: defaultLinkStyle.merge(linkStyle),
           ),
         );
 }
@@ -124,10 +126,7 @@ class SelectableLinkify extends SelectableText {
             options: options,
             linkifiers: linkifiers,
             onOpen: onOpen,
-            linkStyle: const TextStyle(
-              color: Colors.blueAccent,
-              decoration: TextDecoration.underline,
-            ).merge(linkStyle),
+            linkStyle: defaultLinkStyle.merge(linkStyle),
           ),
         );
 }
