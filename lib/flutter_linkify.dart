@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:linkify/linkify.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 export 'package:linkify/linkify.dart'
     show
@@ -17,6 +18,12 @@ export 'package:linkify/linkify.dart'
 
 /// Callback clicked link
 typedef LinkCallback = void Function(LinkableElement link);
+
+void onOpenLaunchUrl(LinkableElement link) async {
+  final uri = Uri.parse(link.url);
+  // note: canLaunchUrl returns false if the app has no permissions to check
+  await launchUrl(uri);
+}
 
 /// Turns URLs into links
 class Linkify extends StatelessWidget {
@@ -77,7 +84,7 @@ class Linkify extends StatelessWidget {
     Key? key,
     required this.text,
     this.linkifiers = defaultLinkifiers,
-    this.onOpen,
+    this.onOpen = onOpenLaunchUrl,
     this.options = const LinkifyOptions(),
     // TextSpan
     this.style,
@@ -229,7 +236,7 @@ class SelectableLinkify extends StatelessWidget {
     Key? key,
     required this.text,
     this.linkifiers = defaultLinkifiers,
-    this.onOpen,
+    this.onOpen = onOpenLaunchUrl,
     this.options = const LinkifyOptions(),
     // TextSpan
     this.style,
