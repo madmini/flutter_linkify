@@ -1,6 +1,8 @@
 name: flutter_linkify_example
 description: flutter_linkify example
 
+publish_to: none
+
 version: 1.0.0+1
 
 environment:
