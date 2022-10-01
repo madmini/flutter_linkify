@@ -1,3 +1,7 @@
+## [5.1.0] - 2021-04-12
+
+-  Add `LinkifySpan` ([#80](https://github.com/Cretezy/flutter_linkify/pull/108))
+
 ## [5.0.2] - 2021-04-12
 
 -  Fix SelectableText only supports TextSpan exception for Flutter 2 ([#80](https://github.com/Cretezy/flutter_linkify/pull/80), thanks [MohamedEL-Torky](https://github.com/MohamedEL-Torky)!)
